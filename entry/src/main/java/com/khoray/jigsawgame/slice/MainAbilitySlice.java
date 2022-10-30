@@ -3,6 +3,7 @@ package com.khoray.jigsawgame.slice;
 import com.khoray.jigsawgame.ImageItemProvider;
 import com.khoray.jigsawgame.ResourceTable;
 import com.khoray.jigsawgame.utils.PicCutter;
+import com.khoray.jigsawgame.utils.DialogUtil;
 import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.ability.DataAbilityHelper;
 import ohos.aafwk.content.Intent;
@@ -17,6 +18,7 @@ import ohos.utils.net.Uri;
 
 import java.io.FileDescriptor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainAbilitySlice extends AbilitySlice {
@@ -43,6 +45,10 @@ public class MainAbilitySlice extends AbilitySlice {
         startGameBtn.setClickedListener(new Component.ClickedListener() {
             @Override
             public void onClick(Component component) {
+                if(showChooseImg.getPixelMap() == null) {
+                    DialogUtil.showToast(getContext(), "你还没有选择图片");
+                    return;
+                }
                 Intent intent = new Intent();
                 intent.setParam("difficulty", picker.getValue());
                 intent.setParam("pic", showChooseImg.getPixelMap());
@@ -76,10 +82,23 @@ public class MainAbilitySlice extends AbilitySlice {
     }
 
     private List<Integer> getImageListData() {
-        List<Integer> ret = new ArrayList<>();
-        ret.add(ResourceTable.Media_img01);
+//        List<Integer> ret = new ArrayList<>();
+        List<Integer> ret = getResourceByFilePrefix("Media");
+
 
         return ret;
+    }
+    public static List<Integer> getResourceByFilePrefix(String filePrefix) {
+        List<Integer> result = new ArrayList<>();
+        Arrays.stream(ResourceTable.class.getDeclaredFields()).filter(field -> field.getName().split("_", 2)[0].startsWith(filePrefix)).forEach(field -> {
+            field.setAccessible(true);
+            try {
+                result.add(field.getInt(ResourceTable.class));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+        return result;
     }
 
     private void selectPic() {

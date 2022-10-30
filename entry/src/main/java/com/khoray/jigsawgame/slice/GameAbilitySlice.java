@@ -17,6 +17,7 @@ import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
 import ohos.media.image.PixelMap;
 
+import java.nio.file.DirectoryStream;
 import java.util.*;
 
 public class GameAbilitySlice extends AbilitySlice {
@@ -27,14 +28,19 @@ public class GameAbilitySlice extends AbilitySlice {
     int pieceSizePx;
     int maxsiz;
     boolean noteFlag = false;
+    boolean startFlag = false;
     Text timeText;
     Timer timer;
     int timeCount = 0;
     Button stopGameBtn, startGameBtn, noteBtn;
+    PixelMap[][][] curPixelMap;
 
     @Override
     public void onStart(Intent intent) {
         super.onStart(intent);
+
+        DirectionalLayout mainUI = new DirectionalLayout(getContext());
+
         DirectionalLayout imgLayout = new DirectionalLayout(getContext());
         imgLayout.setWidth(ComponentContainer.LayoutConfig.MATCH_PARENT);
         imgLayout.setHeight(ComponentContainer.LayoutConfig.MATCH_PARENT);
@@ -45,7 +51,7 @@ public class GameAbilitySlice extends AbilitySlice {
         PixelMap pic = (PixelMap) intent.getSequenceableParam("pic");
         diff = intent.getIntParam("difficulty", 2);
 
-        PixelMap[][][] curPixelMap = PicCutter.cutPicIntoN(pic, diff);
+        curPixelMap = PicCutter.cutPicIntoN(pic, diff);
         int pieceSize = (int) Math.round(300.0 / diff);
 
         pieceSizePx = AttrHelper.vp2px(pieceSize, getContext());
@@ -53,10 +59,9 @@ public class GameAbilitySlice extends AbilitySlice {
 
         imageArray = new Image[diff * diff];
         imgId = new int[diff * diff];
-        DirectionalLayout tmpline = new DirectionalLayout(getContext());
+        DependentLayout tmpline = new DependentLayout(getContext());
         tmpline.setWidth(maxsiz);
         tmpline.setHeight(maxsiz);
-        tmpline.setOrientation(Component.HORIZONTAL);
         ShapeElement ele = new ShapeElement();
         ele.setRgbColor(new RgbColor(160,160,160));
         tmpline.setBackground(ele);
@@ -68,8 +73,10 @@ public class GameAbilitySlice extends AbilitySlice {
                 image.setWidth(pieceSizePx);
                 image.setHeight(pieceSizePx);
                 image.setPixelMap(curPixelMap[0][i][j]);
-                image.setPadding(10, 10, 10, 10);
-                image.setVisibility(Component.INVISIBLE);
+                image.setPadding(2, 2, 2, 2);
+                image.setMarginTop(i * pieceSizePx);
+                image.setMarginLeft(j * pieceSizePx);
+//                image.setVisibility(Component.INVISIBLE);
                 imageArray[i * diff + j] = image;
                 imgId[i * diff + j] = i * diff + j;
                 image.setClickedListener(new slideImageListener());
@@ -116,18 +123,22 @@ public class GameAbilitySlice extends AbilitySlice {
         noteBtn.setClickedListener(new Component.ClickedListener() {
             @Override
             public void onClick(Component component) {
-                for(int i = 0; i < diff * diff - 1; i++) {
-                    imageArray[i].setPixelMap(curPixelMap[noteFlag ? 0 : 1][i / diff][i % diff]);
-                }
-                noteFlag = !noteFlag;
-                if(noteFlag) {
-                    noteBtn.setText("关闭提示");
-                } else {
-                    noteBtn.setText("开启提示");
-                }
+                noteGame();
             }
         });
 
+    }
+
+    private void noteGame() {
+        for(int i = 0; i < diff * diff - 1; i++) {
+            imageArray[i].setPixelMap(curPixelMap[noteFlag ? 0 : 1][i / diff][i % diff]);
+        }
+        noteFlag = !noteFlag;
+        if(noteFlag) {
+            noteBtn.setText("关闭提示");
+        } else {
+            noteBtn.setText("开启提示");
+        }
     }
 
     private void checkEnd() {
@@ -139,9 +150,9 @@ public class GameAbilitySlice extends AbilitySlice {
         }
         if(end) {
             CommonDialog dialog = new CommonDialog(getContext());
-            dialog.setTitleText("恭喜你！");
-            dialog.setContentText("恭喜你成功完成拼图，用时：" + TimeToStrUtil.t2s(timeCount));
-            dialog.setButton(IDialog.BUTTON3, "CONFIRM", (iDialog, i) -> iDialog.destroy());
+            dialog.setTitleText("恭喜你完成拼图！");
+            dialog.setContentText("用时：" + TimeToStrUtil.t2s(timeCount));
+            dialog.setButton(IDialog.BUTTON3, "返回", (iDialog, i) -> iDialog.destroy());
             dialog.setDestroyedListener(() -> {
                resetGame();
             });
@@ -169,6 +180,7 @@ public class GameAbilitySlice extends AbilitySlice {
     }
 
     private void startNewGame() {
+        startFlag = true;
         startGameBtn.setEnabled(false);
         startGameBtn.setTextColor(Color.GRAY);
         stopGameBtn.setEnabled(true);
@@ -193,6 +205,8 @@ public class GameAbilitySlice extends AbilitySlice {
         timer = null;
     }
     private void resetGame() {
+        if(noteFlag) noteGame();
+        startFlag = false;
         stopTimer();
         timeCount = 0;
         timeText.setText("用时：00:00");
@@ -221,6 +235,9 @@ public class GameAbilitySlice extends AbilitySlice {
     class slideImageListener implements Component.ClickedListener {
         @Override
         public void onClick(Component component) {
+            if(!startFlag) {
+                return;
+            }
             // 找位置
             HiLog.info(label, "onclick");
             int id = 0;
@@ -239,11 +256,14 @@ public class GameAbilitySlice extends AbilitySlice {
             }
             HiLog.info(label, "pos:" + pos);
             // 找四个方向
-            int d[] = new int[] {-diff, diff, 1, -1};
+            int x = pos / diff, y = pos % diff;
+            int d[] = new int[] {1, 0, -1, 0};
             for(int dir = 0; dir < 4; dir++) {
-                int npos = pos + d[dir];
+                int nx = x + d[dir], ny = y + d[3 - dir];
+                if(nx < 0 || nx >= diff || ny < 0 || ny >= diff) continue;
+                int npos = nx * diff + ny;
                 HiLog.info(label, "test");
-                if(npos < 0 || npos >= diff * diff) continue;
+
                 if(imgId[npos] == diff * diff - 1) {
                     AnimatorProperty ani = imageArray[id].createAnimatorProperty();
                     float fromX = ani.getTarget().getContentPositionX();
@@ -255,11 +275,11 @@ public class GameAbilitySlice extends AbilitySlice {
                             .moveFromY(fromY)
                             .moveToX(toX)
                             .moveToY(toY);
-
-                    imageArray[diff * diff - 1].setContentPosition(fromX, fromY);
+                    // 防止连续点动画出bug
+                    imageArray[diff * diff - 1].setContentPosition(pos % diff * pieceSizePx, pos / diff * pieceSizePx);
                     imgId[pos] = diff * diff - 1;
                     imgId[npos] = id;
-                    ani.setDuration(300);
+                    ani.setDuration(100);
                     ani.start();
                     break;
                 }

@@ -20,6 +20,7 @@
         ohos:height="100vp"
         ohos:width="match_parent"
         ohos:background_element="$graphic:list_container"
+        ohos:orientation="horizontal"
         />
     <Button
         ohos:id="$+id:btn_choose_img"
