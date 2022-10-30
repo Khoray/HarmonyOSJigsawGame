@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DirectionalLayout
+    xmlns:ohos="http://schemas.huawei.com/res/ohos"
+    ohos:height="match_content"
+    ohos:width="match_parent"
+    ohos:top_padding="10vp"
+    ohos:alignment="center"
+    ohos:orientation="vertical">
+
+    <Text
+        ohos:id="$+id:text_helloworld"
+        ohos:height="50vp"
+        ohos:width="match_content"
+        ohos:background_element="$graphic:background_ability_main"
+        ohos:text="$string:mainability_HelloWorld"
+        ohos:text_size="30vp"
+        />
+    <ListContainer
+        ohos:id="$+id:default_image_list"
+        ohos:height="100vp"
+        ohos:width="match_parent"
+        ohos:background_element="$graphic:list_container"
+        />
+    <Button
+        ohos:id="$+id:btn_choose_img"
+        ohos:height="30vp"
+        ohos:width="230vp"
+        ohos:top_margin="20vp"
+        ohos:start_margin="50vp"
+        ohos:end_margin="50vp"
+        ohos:text="$string:mainability_selectImageFromGallery"
+        ohos:text_size="20vp"
+        ohos:background_element="$ohos:graphic:button_bg_light"
+        />
+    <Image
+        ohos:id="$+id:show_image"
+        ohos:height="300vp"
+        ohos:width="300vp"
+        ohos:background_element="$graphic:image_background"
+        ohos:top_margin="20vp"
+        ohos:scale_mode="stretch"
+        />
+    <DirectionalLayout
+        ohos:height="match_content"
+        ohos:width="match_parent"
+        ohos:orientation="horizontal"
+        ohos:alignment="center"
+        >
+        <Text
+            ohos:height="match_content"
+            ohos:width="match_content"
+            ohos:text="难度："
+            ohos:text_size="20vp"
+            />
+        <Picker
+            ohos:id="$+id:difficulty_picker"
+            ohos:height="150vp"
+            ohos:width="match_content"
+            ohos:end_padding="20vp"
+            ohos:normal_text_size="20vp"
+            ohos:selected_text_size="30vp"
+            />
+        <Button
+            ohos:id="$+id:start_game_btn"
+            ohos:height="50vp"
+            ohos:width="match_content"
+            ohos:start_padding="10vp"
+            ohos:end_padding="10vp"
+            ohos:text_size="20vp"
+            ohos:background_element="$ohos:graphic:button_bg_light"
+            ohos:text="开始游戏"
+            />
+    </DirectionalLayout>
+
+
+
+</DirectionalLayout>

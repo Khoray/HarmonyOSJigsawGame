@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DirectionalLayout
+    xmlns:ohos="http://schemas.huawei.com/res/ohos"
+    ohos:height="match_parent"
+    ohos:width="match_parent"
+    ohos:alignment="center"
+    ohos:orientation="horizontal">
+
+    <DirectionalLayout
+        ohos:height="match_parent"
+        ohos:width="220vp"
+        ohos:alignment="center"
+        ohos:orientation="vertical"
+    >
+        <Text
+            ohos:height="match_content"
+            ohos:width="match_parent"
+            ohos:text_alignment="center"
+            ohos:text="预览图:"
+            ohos:text_size="15vp"
+            />
+        <Image
+            ohos:id="$+id:small_img"
+            ohos:height="200vp"
+            ohos:width="200vp"
+            ohos:background_element="$graphic:image_background"
+            ohos:scale_mode="stretch"
+            />
+
+    </DirectionalLayout>
+
+    <DirectionalLayout
+        ohos:height="match_parent"
+        ohos:width="match_parent"
+        ohos:alignment="center"
+        ohos:orientation="vertical"
+        >
+        <Text
+            ohos:id="$+id:time_text"
+            ohos:height="match_content"
+            ohos:width="match_content"
+            ohos:text="用时：00:00"
+            ohos:text_size="20vp"
+            />
+        <Button
+            ohos:id="$+id:start_btn"
+            ohos:height="match_content"
+            ohos:width="match_parent"
+            ohos:padding="15vp"
+            ohos:start_margin="15vp"
+            ohos:end_margin="20vp"
+            ohos:top_margin="10vp"
+            ohos:text="开始游戏"
+            ohos:text_size="20vp"
+            ohos:background_element="$ohos:graphic:button_bg_light"
+            />
+        <Button
+            ohos:id="$+id:stop_btn"
+            ohos:height="match_content"
+            ohos:width="match_parent"
+            ohos:padding="15vp"
+            ohos:start_margin="15vp"
+            ohos:end_margin="20vp"
+            ohos:top_margin="10vp"
+            ohos:text="停止游戏"
+            ohos:text_size="20vp"
+            ohos:background_element="$ohos:graphic:button_bg_light"
+            />
+        <Button
+            ohos:id="$+id:note_btn"
+            ohos:height="match_content"
+            ohos:width="match_parent"
+            ohos:padding="15vp"
+            ohos:start_margin="15vp"
+            ohos:end_margin="20vp"
+            ohos:top_margin="10vp"
+            ohos:text="开启提示"
+            ohos:text_size="20vp"
+            ohos:background_element="$ohos:graphic:button_bg_light"
+            />
+
+    </DirectionalLayout>
+</DirectionalLayout>
