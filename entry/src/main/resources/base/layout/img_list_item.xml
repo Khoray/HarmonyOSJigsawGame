@@ -6,9 +6,9 @@
     ohos:orientation="vertical">
     <Image
         ohos:id="$+id:img_list_item"
-        ohos:width="100vp"
-        ohos:height="100vp"
-        ohos:padding="5vp"
+        ohos:width="150vp"
+        ohos:height="150vp"
+        ohos:padding="2vp"
         ohos:scale_mode="stretch"
         />
 </DirectionalLayout>

@@ -52,7 +52,7 @@
             ohos:top_margin="10vp"
             ohos:text="开始游戏"
             ohos:text_size="20vp"
-            ohos:background_element="$ohos:graphic:button_bg_light"
+            ohos:background_element="$graphic:color_blue_element"
             />
         <Button
             ohos:id="$+id:stop_btn"
@@ -64,7 +64,7 @@
             ohos:top_margin="10vp"
             ohos:text="停止游戏"
             ohos:text_size="20vp"
-            ohos:background_element="$ohos:graphic:button_bg_light"
+            ohos:background_element="$graphic:color_blue_element"
             />
         <Button
             ohos:id="$+id:note_btn"
@@ -76,7 +76,7 @@
             ohos:top_margin="10vp"
             ohos:text="开启提示"
             ohos:text_size="20vp"
-            ohos:background_element="$ohos:graphic:button_bg_light"
+            ohos:background_element="$graphic:color_blue_element"
             />
 
     </DirectionalLayout>

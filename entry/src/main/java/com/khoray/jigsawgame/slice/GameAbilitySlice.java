@@ -1,6 +1,7 @@
 package com.khoray.jigsawgame.slice;
 
 import com.khoray.jigsawgame.ResourceTable;
+import com.khoray.jigsawgame.utils.MyShuffleUtil;
 import com.khoray.jigsawgame.utils.PicCutter;
 import com.khoray.jigsawgame.utils.TimeToStrUtil;
 import ohos.aafwk.ability.AbilitySlice;
@@ -17,13 +18,12 @@ import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
 import ohos.media.image.PixelMap;
 
-import java.nio.file.DirectoryStream;
 import java.util.*;
 
 public class GameAbilitySlice extends AbilitySlice {
     static final HiLogLabel label = new HiLogLabel(HiLog.LOG_APP, 0x0001, "动画测试");
-    Image imageArray[];
-    int imgId[];
+    Image[] imageArray;
+    int[] imgId;
     int diff;
     int pieceSizePx;
     int maxsiz;
@@ -39,8 +39,6 @@ public class GameAbilitySlice extends AbilitySlice {
     public void onStart(Intent intent) {
         super.onStart(intent);
 
-        DirectionalLayout mainUI = new DirectionalLayout(getContext());
-
         DirectionalLayout imgLayout = new DirectionalLayout(getContext());
         imgLayout.setWidth(ComponentContainer.LayoutConfig.MATCH_PARENT);
         imgLayout.setHeight(ComponentContainer.LayoutConfig.MATCH_PARENT);
@@ -48,23 +46,23 @@ public class GameAbilitySlice extends AbilitySlice {
         imgLayout.setOrientation(Component.VERTICAL);
         imgLayout.setPaddingTop(AttrHelper.vp2px(20, getContext()));
 
-        PixelMap pic = (PixelMap) intent.getSequenceableParam("pic");
+        PixelMap pic = intent.getSequenceableParam("pic");
         diff = intent.getIntParam("difficulty", 2);
 
         curPixelMap = PicCutter.cutPicIntoN(pic, diff);
         int pieceSize = (int) Math.round(300.0 / diff);
 
         pieceSizePx = AttrHelper.vp2px(pieceSize, getContext());
-        maxsiz = AttrHelper.vp2px(300, getContext());;
+        maxsiz = AttrHelper.vp2px(300, getContext());
 
         imageArray = new Image[diff * diff];
         imgId = new int[diff * diff];
-        DependentLayout tmpline = new DependentLayout(getContext());
-        tmpline.setWidth(maxsiz);
-        tmpline.setHeight(maxsiz);
+        DependentLayout gameLayout = new DependentLayout(getContext());
+        gameLayout.setWidth(maxsiz);
+        gameLayout.setHeight(maxsiz);
         ShapeElement ele = new ShapeElement();
-        ele.setRgbColor(new RgbColor(160,160,160));
-        tmpline.setBackground(ele);
+        ele.setRgbColor(new RgbColor(224,224,224));
+        gameLayout.setBackground(ele);
 
         for(int i = 0; i < diff; i++) {
             for(int j = 0; j < diff; j++) {
@@ -80,10 +78,10 @@ public class GameAbilitySlice extends AbilitySlice {
                 imageArray[i * diff + j] = image;
                 imgId[i * diff + j] = i * diff + j;
                 image.setClickedListener(new slideImageListener());
-                tmpline.addComponent(image);
+                gameLayout.addComponent(image);
             }
         }
-        imgLayout.addComponent(tmpline);
+        imgLayout.addComponent(gameLayout);
 
 //
 
@@ -106,26 +104,11 @@ public class GameAbilitySlice extends AbilitySlice {
 
         timeText = (Text) findComponentById(ResourceTable.Id_time_text);
 
-        startGameBtn.setClickedListener(new Component.ClickedListener() {
-            @Override
-            public void onClick(Component component) {
-                startNewGame();
-            }
-        });
+        startGameBtn.setClickedListener(component -> startNewGame());
 
-        stopGameBtn.setClickedListener(new Component.ClickedListener() {
-            @Override
-            public void onClick(Component component) {
-                resetGame();
-            }
-        });
+        stopGameBtn.setClickedListener(component -> resetGame());
 
-        noteBtn.setClickedListener(new Component.ClickedListener() {
-            @Override
-            public void onClick(Component component) {
-                noteGame();
-            }
-        });
+        noteBtn.setClickedListener(component -> noteGame());
 
     }
 
@@ -144,8 +127,9 @@ public class GameAbilitySlice extends AbilitySlice {
     private void checkEnd() {
         boolean end = true;
         for(int i = 0; i < diff * diff; i++) {
-            if(imgId[i] != i) {
+            if (imgId[i] != i) {
                 end = false;
+                break;
             }
         }
         if(end) {
@@ -153,9 +137,7 @@ public class GameAbilitySlice extends AbilitySlice {
             dialog.setTitleText("恭喜你完成拼图！");
             dialog.setContentText("用时：" + TimeToStrUtil.t2s(timeCount));
             dialog.setButton(IDialog.BUTTON3, "返回", (iDialog, i) -> iDialog.destroy());
-            dialog.setDestroyedListener(() -> {
-               resetGame();
-            });
+            dialog.setDestroyedListener(this::resetGame);
             dialog.show();
         }
     }
@@ -168,12 +150,7 @@ public class GameAbilitySlice extends AbilitySlice {
             @Override
             public void run() {
                 timeCount++;
-                getUITaskDispatcher().asyncDispatch(new Runnable() {
-                    @Override
-                    public void run() {
-                        timeText.setText("用时：" + TimeToStrUtil.t2s(timeCount));
-                    }
-                });
+                getUITaskDispatcher().asyncDispatch(() -> timeText.setText("用时：" + TimeToStrUtil.t2s(timeCount)));
             }
         }, 0, 1000);
         HiLog.info(label,  "fuck");
@@ -188,14 +165,12 @@ public class GameAbilitySlice extends AbilitySlice {
         noteBtn.setEnabled(true);
         noteBtn.setTextColor(Color.BLACK);
         createTimer();
-        List<Integer> sf = new ArrayList<>();
         for(int i = 0; i < diff * diff; i++) {
-            sf.add(i);
+            imgId[i] = i;
         }
-        Collections.shuffle(sf);
+        MyShuffleUtil.shuffle(imgId, diff);
         for(int i = 0; i < diff * diff; i++) {
-            imgId[i] = sf.get(i);
-            imageArray[imgId[i]].setContentPosition(i % diff * pieceSizePx, i / diff * pieceSizePx);
+            imageArray[imgId[i]].setContentPosition(i % diff * pieceSizePx, (i / diff) * pieceSizePx);
             imageArray[imgId[i]].setVisibility(Component.VISIBLE);
         }
         imageArray[diff * diff - 1].setVisibility(Component.INVISIBLE);

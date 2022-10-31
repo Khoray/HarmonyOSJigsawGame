@@ -13,6 +13,14 @@
       "value": "图片选择："
     },
     {
+      "name": "gameability_description",
+      "value": "description"
+    },
+    {
+      "name": "entry_GameAbility",
+      "value": "entry game ability"
+    },
+    {
       "name": "mainability_selectImageFromGallery",
       "value": "从相册选择图片"
     }

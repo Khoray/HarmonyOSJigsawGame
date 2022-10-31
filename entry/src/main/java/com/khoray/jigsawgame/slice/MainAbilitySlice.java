@@ -8,7 +8,9 @@ import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.ability.DataAbilityHelper;
 import ohos.aafwk.content.Intent;
 import ohos.aafwk.content.Operation;
+import ohos.agp.colors.RgbColor;
 import ohos.agp.components.*;
+import ohos.agp.components.element.ShapeElement;
 import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
 import ohos.media.image.ImageSource;
@@ -35,10 +37,16 @@ public class MainAbilitySlice extends AbilitySlice {
         Picker picker = (Picker) findComponentById(ResourceTable.Id_difficulty_picker);
         picker.setMinValue(2); // 设置选择器中的最小值
         picker.setMaxValue(6); // 设置选择器中的最大值
-        picker.setFormatter(i -> {
-            String value = Integer.toString(i) + "x" + Integer.toString(i);
-            return value;
-        });
+        picker.setFormatter(i -> Integer.toString(i) + "x" + Integer.toString(i));
+        ShapeElement shape = new ShapeElement();
+        shape.setShape(ShapeElement.RECTANGLE);
+        shape.setRgbColor(RgbColor.fromArgbInt(0xFF40E0D0));
+// 单独设置上边框
+// picker.setDisplayedLinesTopElement(shape);
+// 单独设置下边框
+// picker.setDisplayedLinesBottomElement(shape);
+// 同时设置上下边框
+        picker.setDisplayedLinesElements(shape, shape);
 
         // 设置开始游戏按钮
         Button startGameBtn = (Button) findComponentById(ResourceTable.Id_start_game_btn);
@@ -82,11 +90,7 @@ public class MainAbilitySlice extends AbilitySlice {
     }
 
     private List<Integer> getImageListData() {
-//        List<Integer> ret = new ArrayList<>();
-        List<Integer> ret = getResourceByFilePrefix("Media");
-
-
-        return ret;
+        return getResourceByFilePrefix("Media");
     }
     public static List<Integer> getResourceByFilePrefix(String filePrefix) {
         List<Integer> result = new ArrayList<>();

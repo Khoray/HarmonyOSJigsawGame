@@ -3,7 +3,7 @@
     xmlns:ohos="http://schemas.huawei.com/res/ohos"
     ohos:height="match_content"
     ohos:width="match_parent"
-    ohos:top_padding="10vp"
+    ohos:top_padding="0vp"
     ohos:alignment="center"
     ohos:orientation="vertical">
 
@@ -13,11 +13,11 @@
         ohos:width="match_content"
         ohos:background_element="$graphic:background_ability_main"
         ohos:text="$string:mainability_HelloWorld"
-        ohos:text_size="30vp"
+        ohos:text_size="20vp"
         />
     <ListContainer
         ohos:id="$+id:default_image_list"
-        ohos:height="100vp"
+        ohos:height="150vp"
         ohos:width="match_parent"
         ohos:background_element="$graphic:list_container"
         ohos:orientation="horizontal"
@@ -25,20 +25,18 @@
     <Button
         ohos:id="$+id:btn_choose_img"
         ohos:height="30vp"
-        ohos:width="230vp"
-        ohos:top_margin="20vp"
-        ohos:start_margin="50vp"
-        ohos:end_margin="50vp"
+        ohos:width="180vp"
+        ohos:top_margin="10vp"
         ohos:text="$string:mainability_selectImageFromGallery"
-        ohos:text_size="20vp"
-        ohos:background_element="$ohos:graphic:button_bg_light"
+        ohos:text_size="17vp"
+        ohos:background_element="$graphic:color_blue_element"
         />
     <Image
         ohos:id="$+id:show_image"
         ohos:height="300vp"
         ohos:width="300vp"
         ohos:background_element="$graphic:image_background"
-        ohos:top_margin="20vp"
+        ohos:top_margin="10vp"
         ohos:scale_mode="stretch"
         />
     <DirectionalLayout
@@ -68,7 +66,7 @@
             ohos:start_padding="10vp"
             ohos:end_padding="10vp"
             ohos:text_size="20vp"
-            ohos:background_element="$ohos:graphic:button_bg_light"
+            ohos:background_element="$graphic:color_blue_element"
             ohos:text="开始游戏"
             />
     </DirectionalLayout>
