@@ -41,12 +41,13 @@ public class MainAbilitySlice extends AbilitySlice {
         ShapeElement shape = new ShapeElement();
         shape.setShape(ShapeElement.RECTANGLE);
         shape.setRgbColor(RgbColor.fromArgbInt(0xFF40E0D0));
-// 单独设置上边框
-// picker.setDisplayedLinesTopElement(shape);
-// 单独设置下边框
-// picker.setDisplayedLinesBottomElement(shape);
-// 同时设置上下边框
         picker.setDisplayedLinesElements(shape, shape);
+        // 单独设置上边框
+        // picker.setDisplayedLinesTopElement(shape);
+        // 单独设置下边框
+        // picker.setDisplayedLinesBottomElement(shape);
+        // 同时设置上下边框
+
 
         // 设置开始游戏按钮
         Button startGameBtn = (Button) findComponentById(ResourceTable.Id_start_game_btn);
@@ -94,7 +95,7 @@ public class MainAbilitySlice extends AbilitySlice {
     }
     public static List<Integer> getResourceByFilePrefix(String filePrefix) {
         List<Integer> result = new ArrayList<>();
-        Arrays.stream(ResourceTable.class.getDeclaredFields()).filter(field -> field.getName().split("_", 2)[0].startsWith(filePrefix)).forEach(field -> {
+        Arrays.stream(ResourceTable.class.getDeclaredFields()).filter(field -> (field.getName().split("_", 2)[0].startsWith(filePrefix))).forEach(field -> {
             field.setAccessible(true);
             try {
                 result.add(field.getInt(ResourceTable.class));
@@ -102,6 +103,7 @@ public class MainAbilitySlice extends AbilitySlice {
                 e.printStackTrace();
             }
         });
+        result.remove(0);
         return result;
     }
 

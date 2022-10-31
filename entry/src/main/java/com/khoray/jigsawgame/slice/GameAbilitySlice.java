@@ -154,7 +154,6 @@ public class GameAbilitySlice extends AbilitySlice {
                 getUITaskDispatcher().asyncDispatch(() -> timeText.setText("用时：" + TimeToStrUtil.t2s(timeCount)));
             }
         }, 0, 1000);
-        HiLog.info(label,  "fuck");
     }
 
     private void startNewGame() {
