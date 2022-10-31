@@ -36,7 +36,7 @@ public class MainAbilitySlice extends AbilitySlice {
         // 设置选择难度picker
         Picker picker = (Picker) findComponentById(ResourceTable.Id_difficulty_picker);
         picker.setMinValue(2); // 设置选择器中的最小值
-        picker.setMaxValue(6); // 设置选择器中的最大值
+        picker.setMaxValue(9); // 设置选择器中的最大值
         picker.setFormatter(i -> Integer.toString(i) + "x" + Integer.toString(i));
         ShapeElement shape = new ShapeElement();
         shape.setShape(ShapeElement.RECTANGLE);

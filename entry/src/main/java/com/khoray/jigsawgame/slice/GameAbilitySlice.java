@@ -133,6 +133,7 @@ public class GameAbilitySlice extends AbilitySlice {
             }
         }
         if(end) {
+            stopTimer();
             CommonDialog dialog = new CommonDialog(getContext());
             dialog.setTitleText("恭喜你完成拼图！");
             dialog.setContentText("用时：" + TimeToStrUtil.t2s(timeCount));
@@ -176,6 +177,7 @@ public class GameAbilitySlice extends AbilitySlice {
         imageArray[diff * diff - 1].setVisibility(Component.INVISIBLE);
     }
     private void stopTimer() {
+        if(timer == null) return;
         timer.cancel();
         timer = null;
     }
