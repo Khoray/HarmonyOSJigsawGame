@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <DirectionalLayout
     xmlns:ohos="http://schemas.huawei.com/res/ohos"
-    ohos:height="match_content"
+    ohos:height="match_parent"
     ohos:width="match_parent"
     ohos:top_padding="0vp"
     ohos:alignment="center"
+    ohos:background_element="$media:bg"
     ohos:orientation="vertical">
 
     <Text
         ohos:id="$+id:text_helloworld"
         ohos:height="50vp"
         ohos:width="match_content"
-        ohos:background_element="$graphic:background_ability_main"
+        ohos:text_color="#FFB446FF"
         ohos:text="$string:mainability_HelloWorld"
         ohos:text_size="20vp"
         />
@@ -29,26 +30,29 @@
         ohos:top_margin="10vp"
         ohos:text="$string:mainability_selectImageFromGallery"
         ohos:text_size="17vp"
+        ohos:text_color="#FFFFFF"
         ohos:background_element="$graphic:color_blue_element"
         />
     <Image
         ohos:id="$+id:show_image"
         ohos:height="300vp"
         ohos:width="300vp"
-        ohos:background_element="$media:img01"
+        ohos:background_element="$graphic:image_background"
         ohos:top_margin="10vp"
         ohos:scale_mode="stretch"
         />
     <DirectionalLayout
-        ohos:height="match_content"
+        ohos:height="match_parent"
         ohos:width="match_parent"
         ohos:orientation="horizontal"
         ohos:alignment="center"
+        ohos:top_margin="20vp"
+        ohos:background_element="$graphic:image_background"
         >
         <Text
             ohos:height="match_content"
             ohos:width="match_content"
-            ohos:text="难度："
+            ohos:text="难度  "
             ohos:text_size="20vp"
             />
         <Picker
@@ -67,6 +71,7 @@
             ohos:end_padding="10vp"
             ohos:text_size="20vp"
             ohos:background_element="$graphic:color_blue_element"
+            ohos:text_color="#FFFFFF"
             ohos:text="开始游戏"
             />
     </DirectionalLayout>

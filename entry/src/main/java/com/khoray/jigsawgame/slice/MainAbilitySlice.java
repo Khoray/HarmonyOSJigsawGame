@@ -40,7 +40,7 @@ public class MainAbilitySlice extends AbilitySlice {
         picker.setFormatter(i -> Integer.toString(i) + "x" + Integer.toString(i));
         ShapeElement shape = new ShapeElement();
         shape.setShape(ShapeElement.RECTANGLE);
-        shape.setRgbColor(RgbColor.fromArgbInt(0xFF40E0D0));
+        shape.setRgbColor(RgbColor.fromArgbInt(0x74CD71FF));
         picker.setDisplayedLinesElements(shape, shape);
         // 单独设置上边框
         // picker.setDisplayedLinesTopElement(shape);
@@ -88,6 +88,9 @@ public class MainAbilitySlice extends AbilitySlice {
             }
         });
         lc_img_list.setItemProvider(iip);
+
+        // 设置刚打开时的默认图像
+        showChooseImg.setPixelMap(ResourceTable.Media_img01);
     }
 
     private List<Integer> getImageListData() {
@@ -95,7 +98,7 @@ public class MainAbilitySlice extends AbilitySlice {
     }
     public static List<Integer> getResourceByFilePrefix(String filePrefix) {
         List<Integer> result = new ArrayList<>();
-        Arrays.stream(ResourceTable.class.getDeclaredFields()).filter(field -> (field.getName().split("_", 2)[0].startsWith(filePrefix))).forEach(field -> {
+        Arrays.stream(ResourceTable.class.getDeclaredFields()).filter(field -> (field.getName().startsWith("Media_img"))).forEach(field -> {
             field.setAccessible(true);
             try {
                 result.add(field.getInt(ResourceTable.class));
@@ -103,7 +106,6 @@ public class MainAbilitySlice extends AbilitySlice {
                 e.printStackTrace();
             }
         });
-        result.remove(0);
         return result;
     }
 

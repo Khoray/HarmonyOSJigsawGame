@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <DirectionalLayout
     xmlns:ohos="http://schemas.huawei.com/res/ohos"
-    ohos:height="match_parent"
+    ohos:height="match_content"
     ohos:width="match_parent"
+    ohos:top_margin="50vp"
+    ohos:background_element="$graphic:image_background"
     ohos:alignment="center"
     ohos:orientation="horizontal">
 
@@ -16,7 +18,7 @@
             ohos:height="match_content"
             ohos:width="match_parent"
             ohos:text_alignment="center"
-            ohos:text="预览图:"
+            ohos:text="预览图"
             ohos:text_size="15vp"
             />
         <Image
@@ -50,6 +52,7 @@
             ohos:start_margin="15vp"
             ohos:end_margin="20vp"
             ohos:top_margin="10vp"
+            ohos:text_color="#FFFFFF"
             ohos:text="开始游戏"
             ohos:text_size="20vp"
             ohos:background_element="$graphic:color_blue_element"
@@ -62,7 +65,7 @@
             ohos:start_margin="15vp"
             ohos:end_margin="20vp"
             ohos:top_margin="10vp"
-            ohos:text="停止游戏"
+            ohos:text="结束游戏"
             ohos:text_size="20vp"
             ohos:background_element="$graphic:color_blue_element"
             />

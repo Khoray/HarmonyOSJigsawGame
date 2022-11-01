@@ -9,16 +9,23 @@ import ohos.aafwk.content.Intent;
 import ohos.agp.animation.AnimatorProperty;
 import ohos.agp.colors.RgbColor;
 import ohos.agp.components.*;
+import ohos.agp.components.element.ElementScatter;
+import ohos.agp.components.element.PixelMapElement;
 import ohos.agp.components.element.ShapeElement;
 import ohos.agp.utils.Color;
 import ohos.agp.utils.LayoutAlignment;
 import ohos.agp.window.dialog.CommonDialog;
 import ohos.agp.window.dialog.IDialog;
+import ohos.global.resource.NotExistException;
+import ohos.global.resource.Resource;
 import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
 import ohos.media.image.PixelMap;
 
+import java.io.IOException;
 import java.util.*;
+
+import static ohos.agp.components.ComponentContainer.LayoutConfig.MATCH_CONTENT;
 
 public class GameAbilitySlice extends AbilitySlice {
     static final HiLogLabel label = new HiLogLabel(HiLog.LOG_APP, 0x0001, "动画测试");
@@ -45,6 +52,15 @@ public class GameAbilitySlice extends AbilitySlice {
         imgLayout.setAlignment(LayoutAlignment.CENTER);
         imgLayout.setOrientation(Component.VERTICAL);
         imgLayout.setPaddingTop(AttrHelper.vp2px(20, getContext()));
+        try {
+            Resource resource = getContext().getResourceManager().getResource(ResourceTable.Media_bg);
+            PixelMapElement pme = new PixelMapElement(resource);
+            imgLayout.setBackground(pme);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NotExistException e) {
+            e.printStackTrace();
+        }
 
         PixelMap pic = intent.getSequenceableParam("pic");
         diff = intent.getIntParam("difficulty", 2);
@@ -61,7 +77,7 @@ public class GameAbilitySlice extends AbilitySlice {
         gameLayout.setWidth(maxsiz);
         gameLayout.setHeight(maxsiz);
         ShapeElement ele = new ShapeElement();
-        ele.setRgbColor(new RgbColor(224,224,224));
+        ele.setRgbColor(new RgbColor(255,255,255, 52));
         gameLayout.setBackground(ele);
 
         for(int i = 0; i < diff; i++) {
@@ -134,12 +150,31 @@ public class GameAbilitySlice extends AbilitySlice {
         }
         if(end) {
             stopTimer();
-            CommonDialog dialog = new CommonDialog(getContext());
-            dialog.setTitleText("恭喜你完成拼图！");
-            dialog.setContentText("用时：" + TimeToStrUtil.t2s(timeCount));
-            dialog.setButton(IDialog.BUTTON3, "返回", (iDialog, i) -> iDialog.destroy());
-            dialog.setDestroyedListener(this::resetGame);
-            dialog.show();
+            CommonDialog cd = new CommonDialog(getContext());
+
+            DirectionalLayout dl = (DirectionalLayout) LayoutScatter.getInstance(getContext()).parse(ResourceTable.Layout_gameover_layout, null, false);
+            Button replayBtn = (Button) dl.findComponentById(ResourceTable.Id_replay_btn);
+            replayBtn.setClickedListener(new Component.ClickedListener() {
+                @Override
+                public void onClick(Component component) {
+                    resetGame();
+                    cd.destroy();
+                }
+            });
+
+            Button backBtn = (Button) dl.findComponentById(ResourceTable.Id_back_btn);
+            backBtn.setClickedListener(new Component.ClickedListener() {
+                @Override
+                public void onClick(Component component) {
+                    terminate();
+                    cd.destroy();
+                }
+            });
+            Text playtimeText = (Text) dl.findComponentById(ResourceTable.Id_time_text);
+            playtimeText.setText(timeText.getText());
+            cd.setSize(600, MATCH_CONTENT);
+            cd.setContentCustomComponent(dl);
+            cd.show();
         }
     }
 
@@ -161,9 +196,9 @@ public class GameAbilitySlice extends AbilitySlice {
         startGameBtn.setEnabled(false);
         startGameBtn.setTextColor(Color.GRAY);
         stopGameBtn.setEnabled(true);
-        stopGameBtn.setTextColor(Color.BLACK);
+        stopGameBtn.setTextColor(Color.WHITE);
         noteBtn.setEnabled(true);
-        noteBtn.setTextColor(Color.BLACK);
+        noteBtn.setTextColor(Color.WHITE);
         createTimer();
         for(int i = 0; i < diff * diff; i++) {
             imgId[i] = i;
@@ -187,7 +222,7 @@ public class GameAbilitySlice extends AbilitySlice {
         timeCount = 0;
         timeText.setText("用时：00:00");
         startGameBtn.setEnabled(true);
-        startGameBtn.setTextColor(Color.BLACK);
+        startGameBtn.setTextColor(Color.WHITE);
         stopGameBtn.setEnabled(false);
         stopGameBtn.setTextColor(Color.GRAY);
         noteBtn.setEnabled(false);

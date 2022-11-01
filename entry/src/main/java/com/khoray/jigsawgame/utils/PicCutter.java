@@ -63,7 +63,7 @@ public class PicCutter {
                 Canvas canvas = new Canvas(new Texture(temp2));
                 Paint paint = new Paint();
                 paint.setTextSize(pieceSizeH * 2);
-                paint.setColor(Color.RED);
+                paint.setColor(new Color(Color.rgb(205, 113, 255)));
                 canvas.drawText(paint, "" + (i * n + j + 1), pieceSizeH, pieceSizeH * 2);
                 ret[0][i][j] = temp;
                 ret[1][i][j] = temp2;

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DirectionalLayout
+    xmlns:ohos="http://schemas.huawei.com/res/ohos"
+    ohos:height="match_content"
+    ohos:width="match_parent"
+    ohos:alignment="horizontal_center"
+    ohos:background_element="#74F0DDFF"
+    ohos:top_margin="10fp"
+    ohos:bottom_margin="10fp"
+    ohos:orientation="vertical">
+
+    <Text
+        ohos:height="match_content"
+        ohos:width="match_content"
+        ohos:text_color="#FFCD71FF"
+        ohos:layout_alignment="horizontal_center"
+        ohos:text="恭喜完成拼图！"
+        ohos:text_size="25fp"/>
+
+
+    <DirectionalLayout
+        ohos:height="match_parent"
+        ohos:width="match_content"
+        ohos:orientation="horizontal"
+        ohos:top_margin="18vp"
+        ohos:alignment="horizontal_center">
+
+        <Text
+            ohos:id="$+id:time_text"
+            ohos:height="match_content"
+            ohos:width="match_content"
+            ohos:text_size="18fp"
+            ohos:text_color="#FFCD71FF"
+            ohos:text="用时：00:00">
+        </Text>
+
+
+
+
+    </DirectionalLayout>
+
+
+
+
+    <DirectionalLayout
+        ohos:height="match_parent"
+        ohos:width="match_parent"
+        ohos:orientation="horizontal"
+        ohos:top_margin="18vp"
+        ohos:alignment="horizontal_center">
+
+        <Button
+            ohos:id="$+id:back_btn"
+            ohos:text="选择图片"
+            ohos:text_size="20fp"
+            ohos:background_element="$graphic:color_blue_element"
+            ohos:text_color="#FFFFFF"
+            ohos:height="match_content"
+            ohos:width="95fp"
+            >
+        </Button>
+
+        <Button
+            ohos:id="$+id:replay_btn"
+            ohos:text="重新挑战"
+            ohos:text_size="20fp"
+            ohos:background_element="$graphic:color_blue_element"
+            ohos:text_color="#FFFFFF"
+            ohos:left_margin="10fp"
+            ohos:height="match_content"
+            ohos:width="95fp"
+            >
+        </Button>
+
+    </DirectionalLayout>
+
+
+
+
+
+</DirectionalLayout>
